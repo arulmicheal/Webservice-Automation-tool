@@ -28,18 +28,13 @@ import javax.swing.plaf.basic.BasicButtonUI;
 public class MainFrame extends javax.swing.JFrame {
 
     static public String strCSVFilePath="";
-    Reporter report=new Reporter() {
-        @Override
-        public long takeScreenshot() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    };
+    Reporter report=new Reporter();
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        report.startResult();
+        report.startReport();
     }
 
     /**
@@ -300,26 +295,33 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonUploadActionPerformed
 
     private void jButtonSendReqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendReqActionPerformed
-        report.startTestModule("Test1",jTextFieldEndPointUrl.getText());
-        report.startTestCase(jTextFieldEndPointUrl.getText());
+        String strEndpoint=jTextFieldEndPointUrl.getText();
+        report.startTest(strEndpoint);
         jLabelProcess.setForeground(Color.blue);
         jLabelProcess.setText("Processing...");
         jPanelMainTab.repaint();
         try
         {
             //Getting Endpoint URL
-            RestAssured.baseURI = jTextFieldEndPointUrl.getText();
+            RestAssured.baseURI = strEndpoint;
             // specified in the above step.
             RequestSpecification httpRequest = RestAssured.given();
             Response response =null;
             //Setting Request Method and sending request
             String strMethod=jComboBoxMethods.getSelectedItem().toString();
-            response = switch (strMethod.toLowerCase()) {
-                case "get" -> httpRequest.request(Method.GET);
-                case "post" -> httpRequest.request(Method.POST);
-                case "put" -> httpRequest.request(Method.PUT);
-                case "delete" -> httpRequest.request(Method.DELETE);
-                default -> httpRequest.request(Method.GET);
+            switch (strMethod.toLowerCase()) 
+            {
+                case "get":
+                    response= httpRequest.request(Method.GET);
+                    break;
+                case "post":
+                    response= httpRequest.request(Method.POST);
+                case "put":
+                    response=httpRequest.request(Method.PUT);
+                case "delete":
+                    response=httpRequest.request(Method.DELETE);
+                default:
+                    response=httpRequest.request(Method.GET);
             };
             // Now let us print the body of the message to see what response
             // we have recieved from the server
@@ -328,10 +330,12 @@ public class MainFrame extends javax.swing.JFrame {
             report.reportStep("Testing", "PASS",false);
             jLabelProcess.setForeground(Color.decode("#073b04"));
             jLabelProcess.setText("Completed!");
+            jPanelMainTab.repaint();
         }catch(Exception ex)
         {
             jLabelProcess.setForeground(Color.red);
-        jLabelProcess.setText("Exception");
+            jLabelProcess.setText("Exception");
+            jPanelMainTab.repaint();
         }
         
     }//GEN-LAST:event_jButtonSendReqActionPerformed
