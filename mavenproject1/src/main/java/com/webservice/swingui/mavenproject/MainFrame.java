@@ -6,6 +6,7 @@
 package com.webservice.swingui.mavenproject;
 
 import com.reports.ExtentReport.Reporter;
+import com.util.Data.CsvData;
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
@@ -20,6 +21,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.plaf.basic.BasicButtonUI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -220,11 +223,12 @@ public class MainFrame extends javax.swing.JFrame {
             jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMainTabLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldEndPointUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonSendReq)
-                    .addComponent(jLabelProcess, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelProcess, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jTextFieldEndPointUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonSendReq)))
                 .addGap(27, 27, 27)
                 .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelMainTabLayout.createSequentialGroup()
@@ -283,8 +287,14 @@ public class MainFrame extends javax.swing.JFrame {
             String strFileName=jFileChooser1.getSelectedFile().getName();
             if(strFileName.substring(strFileName.lastIndexOf("."),strFileName.length()).equalsIgnoreCase(".csv"))
             {
-                jLabelFileName.setText(jFileChooser1.getSelectedFile().getName());
-                strCSVFilePath=jFileChooser1.getSelectedFile().getAbsolutePath();
+                try {
+                    jLabelFileName.setText(jFileChooser1.getSelectedFile().getName());
+                    strCSVFilePath=jFileChooser1.getSelectedFile().getAbsolutePath();
+                    CsvData.setData(strCSVFilePath);
+                    new WebserviceMain().batchRequest();
+                } catch (Exception ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }else
             {
                 jLabelFileName.setForeground(Color.red);

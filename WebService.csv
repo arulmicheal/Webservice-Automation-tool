@@ -1,0 +1,6 @@
+Endpoint,Method,ContentType,RequestBody
+http://dummy.restapiexample.com/api/v1/employees,GET,JSON,"testin, test"
+http://dummy.restapiexample.com/api/v1/employee/1,GET,JSON,
+http://dummy.restapiexample.com/api/v1/create,POST,JSON,"{""name"":""test"",""salary"":""123"",""age"":""23""}"
+http://dummy.restapiexample.com/api/v1/update/21,PUT,JSON,"{""name"":""test1"",""salary"":""1123"",""age"":""23""}"
+http://dummy.restapiexample.com/api/v1/delete/2,DELETE,JSON,
