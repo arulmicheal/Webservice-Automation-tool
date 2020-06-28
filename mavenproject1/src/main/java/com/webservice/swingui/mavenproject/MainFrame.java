@@ -32,6 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     static public String strCSVFilePath="";
     Reporter report=new Reporter();
+    WebserviceMain wsMain=new WebserviceMain();
     /**
      * Creates new form MainFrame
      */
@@ -49,7 +50,6 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFileChooser1 = new javax.swing.JFileChooser();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanelMainTab = new javax.swing.JPanel();
         jTextFieldEndPointUrl = new javax.swing.JTextField();
@@ -60,8 +60,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButtonUpload = new javax.swing.JButton();
-        jLabelFileName = new javax.swing.JLabel();
         jLabelProcess = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -71,6 +69,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextAreaResBody = new javax.swing.JTextArea();
+        jCheckBoxBatchExecution = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReqPonse");
@@ -85,11 +84,6 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelMainTab.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
 
         jTextFieldEndPointUrl.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        jTextFieldEndPointUrl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldEndPointUrlActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 204));
@@ -118,14 +112,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 102, 0));
         jLabel4.setText("Response");
-
-        jButtonUpload.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
-        jButtonUpload.setText("Upload (.csv file)");
-        jButtonUpload.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonUploadActionPerformed(evt);
-            }
-        });
 
         jLabelProcess.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jLabelProcess.setForeground(new java.awt.Color(0, 153, 0));
@@ -183,6 +169,20 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jTextAreaResBody);
         jTextAreaResBody.getAccessibleContext().setAccessibleName("jTextAreaResBody");
 
+        jCheckBoxBatchExecution.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        jCheckBoxBatchExecution.setForeground(new java.awt.Color(0, 0, 204));
+        jCheckBoxBatchExecution.setText("Batch Execution");
+        jCheckBoxBatchExecution.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBoxBatchExecutionItemStateChanged(evt);
+            }
+        });
+        jCheckBoxBatchExecution.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxBatchExecutionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelMainTabLayout = new javax.swing.GroupLayout(jPanelMainTab);
         jPanelMainTab.setLayout(jPanelMainTabLayout);
         jPanelMainTabLayout.setHorizontalGroup(
@@ -190,14 +190,6 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanelMainTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelMainTabLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldEndPointUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonSendReq)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelProcess, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelMainTabLayout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,15 +200,23 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabelStatusCode, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jComboBoxMethods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanelMainTabLayout.createSequentialGroup()
+                                    .addComponent(jComboBoxMethods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(59, 59, 59))
                                 .addComponent(jLabel3)
                                 .addComponent(jTabbedPane1)
                                 .addComponent(jScrollPane3))))
                     .addGroup(jPanelMainTabLayout.createSequentialGroup()
-                        .addGap(658, 658, 658)
-                        .addComponent(jButtonUpload)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelFileName)))
+                        .addComponent(jTextFieldEndPointUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxBatchExecution)
+                            .addGroup(jPanelMainTabLayout.createSequentialGroup()
+                                .addComponent(jButtonSendReq)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelProcess, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(118, Short.MAX_VALUE))
         );
         jPanelMainTabLayout.setVerticalGroup(
@@ -229,15 +229,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addComponent(jTextFieldEndPointUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButtonSendReq)))
-                .addGap(27, 27, 27)
-                .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelMainTabLayout.createSequentialGroup()
-                        .addComponent(jComboBoxMethods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)
-                        .addComponent(jLabel3))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButtonUpload)
-                        .addComponent(jLabelFileName)))
+                .addGap(26, 26, 26)
+                .addGroup(jPanelMainTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxMethods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxBatchExecution))
+                .addGap(11, 11, 11)
+                .addComponent(jLabel3)
                 .addGap(8, 8, 8)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -280,32 +277,9 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUploadActionPerformed
-        int iRes=jFileChooser1.showOpenDialog(null);
-        if (iRes == JFileChooser.APPROVE_OPTION)
-        {
-            String strFileName=jFileChooser1.getSelectedFile().getName();
-            if(strFileName.substring(strFileName.lastIndexOf("."),strFileName.length()).equalsIgnoreCase(".csv"))
-            {
-                try {
-                    jLabelFileName.setText(jFileChooser1.getSelectedFile().getName());
-                    strCSVFilePath=jFileChooser1.getSelectedFile().getAbsolutePath();
-                    CsvData.setData(strCSVFilePath);
-                    new WebserviceMain().batchRequest();
-                } catch (Exception ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }else
-            {
-                jLabelFileName.setForeground(Color.red);
-                jLabelFileName.setText("Upload valid file type!");
-               
-            }
-        }
-    }//GEN-LAST:event_jButtonUploadActionPerformed
-
     private void jButtonSendReqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendReqActionPerformed
         String strEndpoint=jTextFieldEndPointUrl.getText();
+        
         report.startTest(strEndpoint);
         jLabelProcess.setForeground(Color.blue);
         jLabelProcess.setText("Processing...");
@@ -319,20 +293,8 @@ public class MainFrame extends javax.swing.JFrame {
             Response response =null;
             //Setting Request Method and sending request
             String strMethod=jComboBoxMethods.getSelectedItem().toString();
-            switch (strMethod.toLowerCase()) 
-            {
-                case "get":
-                    response= httpRequest.request(Method.GET);
-                    break;
-                case "post":
-                    response= httpRequest.request(Method.POST);
-                case "put":
-                    response=httpRequest.request(Method.PUT);
-                case "delete":
-                    response=httpRequest.request(Method.DELETE);
-                default:
-                    response=httpRequest.request(Method.GET);
-            };
+            wsMain.batchRequest(strEndpoint,strMethod);
+            
             // Now let us print the body of the message to see what response
             // we have recieved from the server
             jLabelStatusCode.setText(response.getStatusLine());
@@ -346,13 +308,26 @@ public class MainFrame extends javax.swing.JFrame {
             jLabelProcess.setForeground(Color.red);
             jLabelProcess.setText("Exception");
             jPanelMainTab.repaint();
+            try {
+                throw new Exception(ex);
+            } catch (Exception ex1) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
         
     }//GEN-LAST:event_jButtonSendReqActionPerformed
 
-    private void jTextFieldEndPointUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEndPointUrlActionPerformed
+    private void jCheckBoxBatchExecutionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxBatchExecutionItemStateChanged
+        if(evt.getStateChange()==1)
+        {
+            BatchExecution dialogBatch=new BatchExecution(this, rootPaneCheckingEnabled);
+            dialogBatch.setVisible(true);
+        }
+    }//GEN-LAST:event_jCheckBoxBatchExecutionItemStateChanged
+
+    private void jCheckBoxBatchExecutionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxBatchExecutionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldEndPointUrlActionPerformed
+    }//GEN-LAST:event_jCheckBoxBatchExecutionActionPerformed
 private class CloseTabBtn extends JButton {
  
         public CloseTabBtn() {
@@ -433,14 +408,12 @@ private class CloseTabBtn extends JButton {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSendReq;
-    private javax.swing.JButton jButtonUpload;
+    private javax.swing.JCheckBox jCheckBoxBatchExecution;
     private javax.swing.JComboBox<String> jComboBoxMethods;
-    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabelFileName;
     private javax.swing.JLabel jLabelProcess;
     private javax.swing.JLabel jLabelStatusCode;
     private javax.swing.JPanel jPanel1;
