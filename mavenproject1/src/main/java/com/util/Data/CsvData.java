@@ -22,6 +22,8 @@ import java.util.logging.Logger;
  */
 public class CsvData {
     public static List<ConcurrentHashMap<String, String>> listOfData = new LinkedList<>();
+    private static List<String> listOfHeaders = new ArrayList();
+    private static List<Object[]> listOfRows = new ArrayList();
     /**
      * Reads data from CSV file and stores in list of Maps
      * @param strFilePath
@@ -30,7 +32,23 @@ public class CsvData {
     public static void setData(String strFilePath) throws Exception
     {
         listOfData = new LinkedList<>();
+        listOfHeaders = new ArrayList();
+        listOfRows = new ArrayList();
         getDataFromCsv(strFilePath);
+    }
+    /**
+     * Getting csv column names
+     * @return Object[]
+     * @throws Exception 
+     */
+    public static Object[] getCsvHeaders() throws Exception
+    {
+        return listOfHeaders.toArray();
+    }
+    
+    public static List<Object[]> getCsvRows() throws Exception
+    {
+        return listOfRows;
     }
     /**
      * Get particular cell value from CSV data
@@ -56,9 +74,7 @@ public class CsvData {
                 FileReader readerFile = new FileReader(fileCsv);
                 BufferedReader bufferFile = new BufferedReader(readerFile);
                 String strLine = "";
-                ConcurrentHashMap<String, String> hashMapCsv = new ConcurrentHashMap<String, String>();
-                List<String> listOfHeaders = new ArrayList();
-
+                ConcurrentHashMap<String, String> hashMapCsv = new ConcurrentHashMap<>();
                 int iCount = 0;
                 while ((strLine = bufferFile.readLine()) != null) {
                     String[] arrOfValues = strLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
@@ -73,6 +89,7 @@ public class CsvData {
                     for (int iValues = 0; iValues < arrOfValues.length; iValues++) {
                         hashMapCsv.put(listOfHeaders.get(iValues), arrOfValues[iValues]);
                     }
+                    listOfRows.add(arrOfValues);
                     listOfData.add(hashMapCsv);
                     iCount++;
                 }
