@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
  * @author arulprak
  */
 public class CsvData {
-    public static List<ConcurrentHashMap<String, String>> listOfData = new LinkedList<>();
+    //public static List<ConcurrentHashMap<String, String>> listOfData = new LinkedList<>();
     private static List<String> listOfHeaders = new ArrayList();
     private static List<Object[]> listOfRows = new ArrayList();
     /**
@@ -31,7 +32,7 @@ public class CsvData {
      */
     public static void setData(String strFilePath) throws Exception
     {
-        listOfData = new LinkedList<>();
+        //listOfData = new LinkedList<>();
         listOfHeaders = new ArrayList();
         listOfRows = new ArrayList();
         getDataFromCsv(strFilePath);
@@ -45,10 +46,24 @@ public class CsvData {
     {
         return listOfHeaders.toArray();
     }
-    
+    /**
+     * Gets Csv file data rows
+     * @return List<Object[]>
+     * @throws Exception 
+     */
     public static List<Object[]> getCsvRows() throws Exception
     {
         return listOfRows;
+    }
+    /**
+     * Updates Csv data rows
+     * @return List<Object[]>
+     * @throws Exception 
+     */
+    public static void setCsvRows(Vector vecRows) throws Exception
+    {
+        listOfRows= new ArrayList();
+        listOfRows=vecRows;
     }
     /**
      * Get particular cell value from CSV data
@@ -59,7 +74,7 @@ public class CsvData {
      */
     public static String getData(int iRowNum, String strColumnName) throws Exception
     {
-        return listOfData.get(iRowNum).get(strColumnName);
+        return listOfRows.get(iRowNum)[listOfHeaders.indexOf(strColumnName)].toString();
     }
     /**
      * Reads data from CSV file
@@ -67,7 +82,7 @@ public class CsvData {
      * @return List<ConcurrentHashMap<String, String>>
      * @throws Exception 
      */
-    public static List<ConcurrentHashMap<String, String>> getDataFromCsv(String strFilePath) throws Exception {
+    /*public static List<ConcurrentHashMap<String, String>> getDataFromCsv(String strFilePath) throws Exception {
         try {
             File fileCsv = new File(strFilePath);
             if (fileCsv.exists() && fileCsv.isFile()) {
@@ -98,6 +113,33 @@ public class CsvData {
             throw new Exception(ex);
         }
         return listOfData;
+    }*/
+    public static List<Object[]> getDataFromCsv(String strFilePath) throws Exception {
+        try {
+            File fileCsv = new File(strFilePath);
+            if (fileCsv.exists() && fileCsv.isFile()) {
+                FileReader readerFile = new FileReader(fileCsv);
+                BufferedReader bufferFile = new BufferedReader(readerFile);
+                String strLine = "";
+                int iCount = 0;
+                while ((strLine = bufferFile.readLine()) != null) {
+                    String[] arrOfValues = strLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                    //Fetching headers from CSV file
+                    if (iCount == 0) {
+                        for (String strEach : arrOfValues) {
+                            listOfHeaders.add(strEach);
+                        }
+                        iCount++;
+                        continue;
+                    }
+                    listOfRows.add(arrOfValues);
+                    iCount++;
+                }
+            }
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+        return listOfRows;
     }
 
 }

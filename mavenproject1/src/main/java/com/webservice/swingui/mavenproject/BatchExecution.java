@@ -5,16 +5,17 @@
  */
 package com.webservice.swingui.mavenproject;
 
+import static com.sun.xml.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import com.util.Data.CsvData;
 import static com.webservice.swingui.mavenproject.MainFrame.strCSVFilePath;
 import java.awt.Color;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -48,6 +49,8 @@ WebserviceMain wsMain=new WebserviceMain();
         jButtonExecute = new javax.swing.JButton();
         jButtonClearCsvTable = new javax.swing.JButton();
         jButtonSaveCsv = new javax.swing.JButton();
+        jButtonInsertRow = new javax.swing.JButton();
+        jButtonDeleteRow = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Batch Execution");
@@ -61,7 +64,29 @@ WebserviceMain wsMain=new WebserviceMain();
             }
         });
 
+        jScrollPane1.setAutoscrolls(true);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 500));
+
         jTableCsvData.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
+        jTableCsvData.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Column1", "Column2", "Column3", "Column4", "Column5"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableCsvData.setFillsViewportHeight(true);
+        jTableCsvData.setRowHeight(20);
+        jTableCsvData.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableCsvData);
 
         jCheckBoxParallel.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
@@ -86,10 +111,38 @@ WebserviceMain wsMain=new WebserviceMain();
         jButtonClearCsvTable.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
         jButtonClearCsvTable.setForeground(new java.awt.Color(0, 0, 240));
         jButtonClearCsvTable.setText("Clear Table");
+        jButtonClearCsvTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClearCsvTableActionPerformed(evt);
+            }
+        });
 
         jButtonSaveCsv.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
         jButtonSaveCsv.setForeground(new java.awt.Color(0, 0, 240));
         jButtonSaveCsv.setText("Save");
+        jButtonSaveCsv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveCsvActionPerformed(evt);
+            }
+        });
+
+        jButtonInsertRow.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        jButtonInsertRow.setForeground(new java.awt.Color(0, 0, 240));
+        jButtonInsertRow.setText("Insert Row");
+        jButtonInsertRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInsertRowActionPerformed(evt);
+            }
+        });
+
+        jButtonDeleteRow.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        jButtonDeleteRow.setForeground(new java.awt.Color(0, 0, 240));
+        jButtonDeleteRow.setText("Delete Row");
+        jButtonDeleteRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteRowActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,20 +150,24 @@ WebserviceMain wsMain=new WebserviceMain();
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButtonUpload)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButtonExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButtonClearCsvTable)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonSaveCsv))
-                    .addComponent(jCheckBoxParallel))
-                .addGap(331, 331, 331))
+                    .addComponent(jCheckBoxParallel)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButtonUpload)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButtonInsertRow)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonDeleteRow)))
+                .addGap(242, 242, 242))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,21 +175,25 @@ WebserviceMain wsMain=new WebserviceMain();
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(41, 41, 41)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonUpload)
-                            .addComponent(jLabelFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonUpload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelFileName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonInsertRow)
+                            .addComponent(jButtonDeleteRow))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonClearCsvTable)
                             .addComponent(jButtonSaveCsv))
-                        .addGap(18, 18, 18)
+                        .addGap(39, 39, 39)
                         .addComponent(jCheckBoxParallel)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(96, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -156,25 +217,35 @@ WebserviceMain wsMain=new WebserviceMain();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUploadActionPerformed
+        jLabelFileName.setText("");
+        jLabelFileName.repaint();
         int iRes=jFileChooser1.showOpenDialog(null);
         DefaultTableModel tableModel = new DefaultTableModel(0,0); 
+        
         if (iRes == JFileChooser.APPROVE_OPTION)
         {
             String strFileName=jFileChooser1.getSelectedFile().getName();
             if(strFileName.substring(strFileName.lastIndexOf("."),strFileName.length()).equalsIgnoreCase(".csv"))
             {
                 try {
+                    jLabelFileName.setForeground(Color.blue);
                     jLabelFileName.setText(jFileChooser1.getSelectedFile().getName());
+                    
                     strCSVFilePath=jFileChooser1.getSelectedFile().getAbsolutePath();
                     CsvData.setData(strCSVFilePath);
                     //Loading data in jTable from CSV
-                    List<ConcurrentHashMap<String,String>> listOfData=CsvData.listOfData;
+                    List<Object[]> listOfData=CsvData.getCsvRows();
                     tableModel = new DefaultTableModel(CsvData.getCsvHeaders(), 0); 
                     jTableCsvData.setModel(tableModel);
+                    for (int i = 0; i < jTableCsvData.getColumnModel().getColumnCount(); i++) {
+                        TableColumn column = jTableCsvData.getColumnModel().getColumn(i);
+                        column.setPreferredWidth(100);
+                    }
                     //Add row dynamically into the table      
                     for (int count = 1; count <= listOfData.size()-1; count++) {
                             tableModel.addRow(CsvData.getCsvRows().get(count));
                      }
+                    jScrollPane1.repaint();
                 } catch (Exception ex) {
                     Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -197,6 +268,54 @@ WebserviceMain wsMain=new WebserviceMain();
     private void jButtonExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExecuteActionPerformed
         
     }//GEN-LAST:event_jButtonExecuteActionPerformed
+
+    private void jButtonClearCsvTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearCsvTableActionPerformed
+        DefaultTableModel dm = (DefaultTableModel)jTableCsvData.getModel();
+        dm.getDataVector().removeAllElements();
+        dm.fireTableDataChanged();
+    }//GEN-LAST:event_jButtonClearCsvTableActionPerformed
+
+    private void jButtonSaveCsvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveCsvActionPerformed
+    try {
+        DefaultTableModel dm = (DefaultTableModel)jTableCsvData.getModel();
+        dm.fireTableDataChanged();
+        CsvData.setCsvRows(dm.getDataVector());
+    } catch (Exception ex) {
+        Logger.getLogger(BatchExecution.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_jButtonSaveCsvActionPerformed
+
+    private void jButtonInsertRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertRowActionPerformed
+        DefaultTableModel dm = (DefaultTableModel)jTableCsvData.getModel();
+        dm.insertRow(jTableCsvData.getSelectedRow()+1,new Vector());
+        dm.fireTableDataChanged();
+    }//GEN-LAST:event_jButtonInsertRowActionPerformed
+
+    private void jButtonDeleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteRowActionPerformed
+    try {
+        DefaultTableModel dm = (DefaultTableModel)jTableCsvData.getModel();
+        int iSelectedRow=jTableCsvData.getSelectedRow();
+        if(iSelectedRow>=0)
+        {
+            while (iSelectedRow != -1)
+            {
+                int modelRow = jTableCsvData.convertRowIndexToModel(iSelectedRow);
+                dm.removeRow( modelRow );
+                iSelectedRow = jTableCsvData.getSelectedRow();
+            }
+            /*for(int iRow=0;iRow<iSelectedRows.length;iRow++)
+            {
+                dm.removeRow(iSelectedRows[iRow]);
+                iSelectedRows=jTableCsvData.getSelectedRows();
+                iRow=0;
+            }*/
+            dm.fireTableDataChanged();
+            CsvData.setCsvRows(dm.getDataVector());
+        }
+    } catch (Exception ex) {
+        Logger.getLogger(BatchExecution.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_jButtonDeleteRowActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,7 +362,9 @@ WebserviceMain wsMain=new WebserviceMain();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonClearCsvTable;
+    private javax.swing.JButton jButtonDeleteRow;
     private javax.swing.JButton jButtonExecute;
+    private javax.swing.JButton jButtonInsertRow;
     private javax.swing.JButton jButtonSaveCsv;
     private javax.swing.JButton jButtonUpload;
     private javax.swing.JCheckBox jCheckBoxParallel;
