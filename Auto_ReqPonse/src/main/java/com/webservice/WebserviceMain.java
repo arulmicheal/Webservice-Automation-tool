@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.webservice.swingui.mavenproject;
+package com.webservice;
 
 import com.reports.ExtentReport.Reporter;
-import com.util.Data.CsvData;
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashMap;
 
 /**
  *
@@ -22,6 +19,21 @@ import java.util.logging.Logger;
 public class WebserviceMain {
 public static Reporter report=new Reporter();
 public static Response response;
+public RestWebserviceRequest restRequest;
+    public void sendRequest(String strEndpoint, String strMethod, String strRequestBody, 
+            HashMap<String,String> mapHeaders, HashMap<String,String> mapParams) throws Exception
+    {
+        report.startTest(strEndpoint);
+        try
+        {
+            //Setting Request Method and sending request
+            restRequest.httpRequest(strEndpoint, strMethod, strRequestBody, mapHeaders, mapParams);
+            
+        }catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
     public void batchRequest(String strEndpoint, String strMethod) throws Exception
     {
         report.startTest(strEndpoint);

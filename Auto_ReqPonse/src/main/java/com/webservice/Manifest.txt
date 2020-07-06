@@ -1,1 +1,1 @@
-Main-Class: com.webservice.swingui.mavenproject.MainFrame
+Main-Class: com.webservice.swingui.MainFrame

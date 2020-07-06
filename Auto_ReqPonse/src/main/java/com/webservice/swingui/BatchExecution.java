@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.webservice.swingui.mavenproject;
+package com.webservice.swingui;
 
+import com.webservice.WebserviceMain;
 import static com.sun.xml.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import com.util.Data.CsvData;
-import static com.webservice.swingui.mavenproject.MainFrame.strCSVFilePath;
+import static com.webservice.swingui.MainFrame.strCSVFilePath;
 import java.awt.Color;
 import java.util.List;
 import java.util.Vector;

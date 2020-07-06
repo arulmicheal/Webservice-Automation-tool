@@ -1,5 +1,5 @@
 
-package com.webservice.swingui.mavenproject;
+package com.webservice.swingui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
