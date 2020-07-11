@@ -1,4 +1,4 @@
-package com.reports.ExtentReport;
+package com.API.reports.ExtentReport;
 
 import java.io.IOException;
 

@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.webservice.swingui;
+package com.API.swingui;
 
-import com.webservice.WebserviceMain;
-import com.reports.ExtentReport.Reporter;
-import com.util.Data.CsvData;
+import com.API.main.WebserviceMain;
+import com.API.reports.ExtentReport.Reporter;
+import com.API.util.Data.CsvData;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JFileChooser;
@@ -574,19 +575,17 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelMainTab.repaint();
         try
         {
-            //Getting Endpoint URL
-            RestAssured.baseURI = strEndpoint;
-            // specified in the above step.
-            RequestSpecification httpRequest = RestAssured.given();
-            Response response =null;
             //Setting Request Method and sending request
             String strMethod=jComboBoxMethods.getSelectedItem().toString();
-            wsMain.batchRequest(strEndpoint,strMethod);
-            
+            String strRequestBody=jTextAreaReqBody.getText();
+            HashMap<String,String> mapHeaders=new HashMap<String,String>();
+            HashMap<String,String> mapParams=new HashMap<String,String>();
+            //wsMain.batchRequest(strEndpoint,strMethod);
+            wsMain.sendRequest(strEndpoint, strMethod, strRequestBody, mapHeaders, mapParams);
             // Now let us print the body of the message to see what response
             // we have recieved from the server
-            jLabelStatusCode.setText(response.getStatusLine());
-            jTextAreaResBody.setText(response.getBody().prettyPrint());
+            //jLabelStatusCode.setText(response.getStatusLine());
+            //jTextAreaResBody.setText(response.getBody().prettyPrint());
             report.reportStep("Testing", "PASS",false);
             jLabelProcess.setForeground(Color.decode("#073b04"));
             jLabelProcess.setText("Completed!");

@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.webservice;
+package com.API.main;
 
-import com.reports.ExtentReport.Reporter;
+import com.API.reports.ExtentReport.Reporter;
+import com.API.swingui.BatchExecution;
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,15 +22,31 @@ import java.util.HashMap;
 public class WebserviceMain {
 public static Reporter report=new Reporter();
 public static Response response;
-public RestWebserviceRequest restRequest;
+public API_Request request;
     public void sendRequest(String strEndpoint, String strMethod, String strRequestBody, 
             HashMap<String,String> mapHeaders, HashMap<String,String> mapParams) throws Exception
     {
         report.startTest(strEndpoint);
         try
         {
-            //Setting Request Method and sending request
-            restRequest.httpRequest(strEndpoint, strMethod, strRequestBody, mapHeaders, mapParams);
+            request= new RestAPIRequest();
+            //Sending request
+            request.sendRequest(strEndpoint, strMethod, strRequestBody, mapHeaders, mapParams);
+            
+        }catch(Exception ex)
+        {
+            Logger.getLogger(WebserviceMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void sendSOAPRequest(String strEndpoint, String strMethod, String strRequestBody, 
+            HashMap<String,String> mapHeaders, HashMap<String,String> mapParams) throws Exception
+    {
+        report.startTest(strEndpoint);
+        try
+        {
+            request= new SoapAPIRequest();
+            //Sending request
+            request.sendRequest(strEndpoint, strMethod, strRequestBody, mapHeaders, mapParams);
             
         }catch(Exception ex)
         {
